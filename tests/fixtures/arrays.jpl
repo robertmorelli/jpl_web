@@ -1,0 +1,7 @@
+let squares = array[i : 5] i * i
+show squares[0]
+show squares[2]
+show squares[4]
+
+let total = sum[i : 5] squares[i]
+show total

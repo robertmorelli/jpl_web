@@ -1,0 +1,2 @@
+read image "input.png" to img
+write image img to "output.png"

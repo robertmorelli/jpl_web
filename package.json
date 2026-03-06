@@ -1,0 +1,32 @@
+{
+  "name": "jpl_wasm",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.mjs",
+  "bin": {
+    "jpl": "./src/cli.mjs"
+  },
+  "scripts": {
+    "test": "node tests/test.mjs",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:all": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "build:web": "vite build",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "chevrotain": "^11.0.0",
+    "pngjs": "^7.0.0",
+    "wabt": "^1.0.36"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^1.5.0",
+    "typescript": "^5.4.0",
+    "vite": "^5.2.0",
+    "vite-plugin-top-level-await": "^1.4.0",
+    "vite-plugin-wasm": "^3.3.0",
+    "vitest": "^1.5.0"
+  }
+}

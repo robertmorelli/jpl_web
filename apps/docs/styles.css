@@ -1,0 +1,400 @@
+/* ==========================================================================
+   JPL Playground — dark theme stylesheet
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Tokens / Design system
+   -------------------------------------------------------------------------- */
+:root {
+  --bg:         #0d1117;
+  --bg-panel:   #161b22;
+  --bg-input:   #1c2128;
+  --bg-hover:   #21262d;
+  --border:     #30363d;
+  --border-subtle: #21262d;
+
+  --text:       #e6edf3;
+  --text-muted: #7d8590;
+  --text-dim:   #484f58;
+
+  --accent:     #58a6ff;
+  --accent-hover: #79c0ff;
+  --danger:     #f85149;
+  --success:    #3fb950;
+  --warning:    #d29922;
+
+  --radius:     6px;
+  --radius-lg:  10px;
+  --font-mono:  "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace,
+                SFMono-Regular, Menlo, monospace;
+  --font-sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+                sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   Reset / base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   Header
+   -------------------------------------------------------------------------- */
+.jpl-header {
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+}
+.jpl-header-inner {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+.jpl-header-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+.jpl-header-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  flex: 1;
+}
+.jpl-header-link {
+  font-size: 13px;
+  color: var(--accent);
+  text-decoration: none;
+}
+.jpl-header-link:hover { color: var(--accent-hover); text-decoration: underline; }
+
+/* --------------------------------------------------------------------------
+   Layout
+   -------------------------------------------------------------------------- */
+.jpl-layout {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  height: calc(100vh - 49px);   /* minus header */
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Sidebar
+   -------------------------------------------------------------------------- */
+.jpl-sidebar {
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border);
+  padding: 16px 0;
+  overflow-y: auto;
+}
+.jpl-sidebar-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding: 0 16px 8px;
+}
+.jpl-example-list { list-style: none; }
+.jpl-example-btn {
+  width: 100%;
+  text-align: left;
+  padding: 6px 16px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.1s, color 0.1s;
+}
+.jpl-example-btn:hover { background: var(--bg-hover); color: var(--text); }
+.jpl-example-btn.active { color: var(--accent); font-weight: 500; }
+
+/* --------------------------------------------------------------------------
+   Workspace / RunPage
+   -------------------------------------------------------------------------- */
+.jpl-workspace { overflow: hidden; display: flex; flex-direction: column; }
+
+.jpl-run-page {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Editor section */
+.jpl-editor-section {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--border);
+  min-height: 0;
+}
+.jpl-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+.jpl-source {
+  flex: 1;
+  resize: none;
+  background: var(--bg-input);
+  color: var(--text);
+  border: none;
+  outline: none;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.6;
+  tab-size: 2;
+  white-space: pre;
+  overflow: auto;
+}
+.jpl-source::placeholder { color: var(--text-dim); }
+
+/* Output panels */
+.jpl-panels {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.jpl-tab-bar {
+  display: flex;
+  gap: 0;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.jpl-tab {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.1s, border-color 0.1s;
+}
+.jpl-tab:hover { color: var(--text); }
+.jpl-tab.active { color: var(--text); border-bottom-color: var(--accent); }
+
+.jpl-panel {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+.jpl-panel.hidden { display: none; }
+
+/* stdout output */
+.jpl-output {
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.jpl-output-line { white-space: pre-wrap; }
+.jpl-output-line.jpl-error { color: var(--danger); }
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.jpl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-hover);
+  color: var(--text);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.jpl-btn:hover:not(:disabled) { background: #292e36; border-color: #444c56; }
+.jpl-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.jpl-btn-primary {
+  background: #1f6feb;
+  border-color: #1f6feb;
+  color: #fff;
+  font-weight: 500;
+}
+.jpl-btn-primary:hover:not(:disabled) { background: #388bfd; border-color: #388bfd; }
+
+.jpl-btn-sm { padding: 3px 10px; font-size: 12px; }
+
+/* --------------------------------------------------------------------------
+   Status badge
+   -------------------------------------------------------------------------- */
+.jpl-status {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  background: var(--bg-input);
+  margin-left: auto;
+}
+.jpl-status-running   { color: var(--warning); border-color: var(--warning); }
+.jpl-status-completed { color: var(--success); border-color: var(--success); }
+.jpl-status-failed    { color: var(--danger);  border-color: var(--danger); }
+.jpl-status-cancelled { color: var(--text-muted); }
+
+/* --------------------------------------------------------------------------
+   WAT panel
+   -------------------------------------------------------------------------- */
+.jpl-wat-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.jpl-wat-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-panel);
+  flex-shrink: 0;
+}
+.jpl-wat-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  flex: 1;
+}
+.jpl-wat-code {
+  flex: 1;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  overflow: auto;
+  white-space: pre;
+  color: var(--text);
+  transition: opacity 0.2s;
+}
+.jpl-wat-code.jpl-stale { opacity: 0.45; }
+.jpl-placeholder { color: var(--text-dim); font-style: italic; }
+
+/* WAT syntax highlighting */
+.wat-keyword { color: #ff7b72; }
+.wat-type    { color: #79c0ff; }
+.wat-instr   { color: #d2a8ff; }
+.wat-ident   { color: #ffa657; }
+.wat-string  { color: #a5d6ff; }
+.wat-number  { color: #79c0ff; }
+.wat-comment { color: #8b949e; font-style: italic; }
+
+/* --------------------------------------------------------------------------
+   Images panel
+   -------------------------------------------------------------------------- */
+.jpl-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+  align-content: flex-start;
+}
+.jpl-image-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-panel);
+  max-width: 320px;
+}
+.jpl-image-preview {
+  display: block;
+  max-width: 320px;
+  max-height: 240px;
+  object-fit: contain;
+  background: repeating-conic-gradient(var(--bg-hover) 0% 25%, var(--bg-input) 0% 50%)
+    0 0 / 12px 12px;
+}
+.jpl-image-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+.jpl-image-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Suspend / upload modal
+   -------------------------------------------------------------------------- */
+.jpl-suspend-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.jpl-suspend-overlay.hidden { display: none; }
+
+.jpl-suspend-modal {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.jpl-suspend-title { font-size: 16px; font-weight: 600; }
+.jpl-suspend-hint  { font-size: 13px; color: var(--text-muted); }
+
+.jpl-file-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: border-color 0.15s, color 0.15s;
+}
+.jpl-file-label:hover { border-color: var(--accent); color: var(--accent); }
+.jpl-file-input { display: none; }
+
+/* --------------------------------------------------------------------------
+   Scrollbars (Webkit)
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #444c56; }

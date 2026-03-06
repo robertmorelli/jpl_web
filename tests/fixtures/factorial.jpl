@@ -1,0 +1,7 @@
+fn fact(n : int) : int {
+  return if n <= 1 then 1 else n * fact(n - 1)
+}
+
+show fact(1)
+show fact(5)
+show fact(10)
