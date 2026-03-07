@@ -61,6 +61,8 @@ function highlightWat(wat: string): string {
 // ---------------------------------------------------------------------------
 
 export interface WatPanelOptions {
+  /** Label shown in the panel toolbar (default: "WAT"). */
+  title?: string;
   /** Show a "Copy" button (default: true). */
   copyButton?: boolean;
   /** Show a "Download" button (default: true). */
@@ -81,7 +83,7 @@ export class WatPanel {
 
     const title = document.createElement("span");
     title.className = "jpl-wat-title";
-    title.textContent = "WAT";
+    title.textContent = options.title ?? "WAT";
     toolbar.appendChild(title);
 
     if (options.copyButton !== false) {

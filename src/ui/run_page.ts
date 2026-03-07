@@ -32,6 +32,7 @@ export interface RunPageOptions {
 export class RunPage {
   private readonly runtime = new BrowserRuntime();
   private readonly watPanel: WatPanel;
+  private readonly prettyWatPanel: WatPanel;
 
   private readonly sourceEl: HTMLTextAreaElement;
   private readonly outputEl: HTMLElement;
@@ -58,7 +59,12 @@ export class RunPage {
     this.suspendOverlay = container.querySelector<HTMLElement>(".jpl-suspend-overlay")!;
 
     this.watPanel = new WatPanel(
-      container.querySelector<HTMLElement>(".jpl-wat-section")!
+      container.querySelector<HTMLElement>(".jpl-wat-section")!,
+      { title: "WAT" }
+    );
+    this.prettyWatPanel = new WatPanel(
+      container.querySelector<HTMLElement>(".jpl-pretty-wat-section")!,
+      { title: "Pretty WAT" }
     );
 
     // Wire runtime state changes
@@ -111,6 +117,7 @@ export class RunPage {
         <div class="jpl-tab-bar" role="tablist">
           <button class="jpl-tab active" data-tab="output" role="tab">Output</button>
           <button class="jpl-tab" data-tab="wat" role="tab">WAT</button>
+          <button class="jpl-tab" data-tab="pretty-wat" role="tab">Pretty WAT</button>
           <button class="jpl-tab" data-tab="images" role="tab">Images</button>
         </div>
         <div class="jpl-panel" data-panel="output">
@@ -118,6 +125,9 @@ export class RunPage {
         </div>
         <div class="jpl-panel hidden" data-panel="wat">
           <div class="jpl-wat-section"></div>
+        </div>
+        <div class="jpl-panel hidden" data-panel="pretty-wat">
+          <div class="jpl-pretty-wat-section"></div>
         </div>
         <div class="jpl-panel hidden" data-panel="images">
           <div class="jpl-images"></div>
@@ -171,9 +181,12 @@ export class RunPage {
     if (result.ok) {
       this.watPanel.wat = result.wat;
       this.watPanel.markFresh();
+      this.prettyWatPanel.wat = result.prettyWat;
+      this.prettyWatPanel.markFresh();
     } else {
       // Keep last WAT but dim it
       this.watPanel.markStale();
+      this.prettyWatPanel.markStale();
       for (const d of result.diagnostics) {
         const loc = d.line != null ? ` [${d.line}:${d.column ?? 0}]` : "";
         this._appendOutput(`${d.kind} error${loc}: ${d.message}`, "jpl-error");

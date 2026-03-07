@@ -12,6 +12,7 @@
 // casts at the boundary. checkJs: false keeps the .mjs files untype-checked.
 import { parseJPL, formatErrors, buildAST, typecheck, buildWasm3IR } from "../index.mjs";
 import { emitWasm3Wat } from "../wasm3/wat_emitter.mjs";
+import { prettyWat as _prettyWat } from "./pretty_wat.ts";
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -37,8 +38,10 @@ export interface CompileResult {
   ast: unknown;
   /** Wasm3 IR object produced by buildWasm3IR. Pass to runWasmIR. */
   ir: unknown;
-  /** WAT text. Present only when ok === true. */
+  /** WAT text (flat stack format). Present only when ok === true. */
   wat: string;
+  /** WAT text (fully-folded S-expression format). Present only when ok === true. */
+  prettyWat: string;
   /** String table embedded in the module (indices map to print_literal calls). */
   strings: string[];
   /** True when the program contains read image / write image commands. */
@@ -59,6 +62,7 @@ export function compileProgram(
     ast: null,
     ir: null,
     wat: "",
+    prettyWat: "",
     strings: [],
     hasImageIO: false,
     diagnostics: [],
@@ -112,9 +116,11 @@ export function compileProgram(
   // ── IR + WAT ──────────────────────────────────────────────────────────────
   let ir: any;
   let wat: string;
+  let prettyWat: string;
   try {
     ir = (buildWasm3IR as any)(ast, { args: options.args ?? [] });
     wat = (emitWasm3Wat as any)(ir, { namedVars: options.namedVars ?? false }) as string;
+    prettyWat = _prettyWat(ir);
   } catch (e: unknown) {
     return { ...empty, ast, diagnostics: [{ kind: "type", message: _msg(e) }] };
   }
@@ -124,6 +130,7 @@ export function compileProgram(
     ast,
     ir,
     wat,
+    prettyWat,
     strings: (ir.strings as string[]) ?? [],
     hasImageIO: (ir.hasImageIO as boolean) ?? false,
     diagnostics: [],

@@ -35,6 +35,7 @@ function makeCompiled(overrides: Partial<CompileResult> = {}): CompileResult {
     ast: {},
     ir: {},
     wat: "(module)",
+    prettyWat: "(module)",
     strings: [],
     hasImageIO: false,
     diagnostics: [],
