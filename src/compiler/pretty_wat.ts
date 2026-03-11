@@ -334,14 +334,14 @@ function foldInstrs(
       }
 
       case "block": {
-        flush();
+        // Do NOT flush: pending stack values may be consumed by ops after this block.
+        // Void blocks have no result, so they don't disturb the parent stack.
         const body = foldInstrs(instr.body ?? [], localNames, 0, ctx);
         out.push(`(block ${instr.label}\n${indent(body.join("\n"), 2)}\n)`);
         break;
       }
 
       case "loop": {
-        flush();
         const body = foldInstrs(instr.body ?? [], localNames, 0, ctx);
         out.push(`(loop ${instr.label}\n${indent(body.join("\n"), 2)}\n)`);
         break;
@@ -349,8 +349,8 @@ function foldInstrs(
 
       case "if": {
         const cond = pop();
-        const result: string | undefined = instr.result;
-        const resultStr = result ? ` (result ${result})` : "";
+        const result: unknown = instr.result; // string or ref-type object
+        const resultStr = result ? ` (result ${valTypeStr(result)})` : "";
 
         const thenStmts = foldInstrs(instr.then ?? [], localNames, result ? 1 : 0, ctx);
         const elseStmts = foldInstrs(instr.else ?? [], localNames, result ? 1 : 0, ctx);
@@ -369,7 +369,7 @@ function foldInstrs(
         if (result) {
           stack.push(ifExpr);
         } else {
-          flush();
+          // Do NOT flush: pending stack values may be consumed by ops after this if.
           out.push(ifExpr);
         }
         break;
